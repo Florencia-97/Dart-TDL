@@ -38,46 +38,42 @@ class Sunflower {
 
   final context = (querySelector('#canvas') as CanvasElement).context2D;
 
-  int seeds;
+  int d = 0;
+  int n = 0;
 
   Sunflower() {
-    InputElement nameColor = querySelector('#color');
-    InputElement slider = querySelector('#slider');
+    InputElement _n = querySelector('#n');
+    InputElement _d = querySelector('#d');
 
-    void updateFlower() {
-      seeds = int.parse(slider.value);
+    void updateDFlower() {
+      d = int.parse(_d.value);
       drawFrame();
     }
 
-    void updateColor() {
-      Color color = Color(nameColor.value);
-      orange = color.colorString();
+    void updateNFlower() {
+      n = int.parse(_n.value);
       drawFrame();
     }
 
-    slider.onChange.listen((_) => updateFlower());
-    nameColor.onChange.listen((_) => updateColor());
+    _n.onChange.listen((_) => updateNFlower());
+    _d.onChange.listen((_) => updateDFlower());
 
-    updateFlower();
-    updateColor();
   }
 
   // Draw the complete figure for the current number of seeds.
   void drawFrame() {
-    print('seed value = $seeds');
 
     context.clearRect(0, 0, maxD, maxD);
 
-    for (var i = 0; i < seeds; i++) {
-      var theta = i * tau / phi;
-      var r = math.sqrt(i) * scaleFactor;
-      var x = center + r * math.cos(theta);
-      var y = center - r * math.sin(theta);
+    for (var i = 0; i < 361; i++) {
+      var k =  i * d;
+      var r = 150 * math.sin(n*k*math.pi / 180);
+      var x = center + r * math.cos(k*math.pi / 180);
+      var y = center - r * math.sin(k*math.pi / 180);
       drawSeed(x, y);
     }
   }
 
-  // Draw a small circle representing a seed centered at (x,y).
   void drawSeed(num x, num y) {
     context
       ..beginPath()

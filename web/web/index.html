@@ -13,19 +13,31 @@
 </head>
 
 <body>
+  <h2>Creador de flores</h2>
+  <!-- 
+    Some nice:
+      d=23
+      n=12
 
-  <h2>Dr. Fibonacci's Sunflower Spectacular</h2>
-
-  <div>
-    <canvas id="canvas" width="300" height="300"></canvas>
-  </div>
-
-  <div>
-    <label>0</label>
-      <input id="slider" type="range" max="1000" value="500" />
-    <label>1000</label><br>
-    <input id="color" value="0" />
-  </div>
+      other:
+      d=2
+      n=34
+  -->
+  <main class="area">
+    <div id="canvas_area">
+        <canvas id="canvas" width="600" height="600"></canvas>
+    </div>
+    <div class="inputs">
+        <div class="row">
+            <h3>d: </h3>
+            <input id="d" value="0"/>
+        </div>
+        <div class="row">
+            <h3>n: </h3>
+            <input id="n" value="0"/>
+        </div>
+    </div>
+  </main>
 
 
 </body>
