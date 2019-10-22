@@ -1,7 +1,3 @@
-// Copyright 2011 the Dart project authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license
-// that can be found in the LICENSE file.
-
 import 'dart:html';
 import 'dart:math' as math;
 
@@ -9,32 +5,15 @@ void main() {
   Sunflower();
 }
 
-class Color {
-  var num;
-  
-  Color(this.num);
-  
-  colorString(){
-    switch (num) {
-      case "0":
-        return 'red';
-      case "1":
-        return 'green';
-    default:
-      return 'orange';
-    }
-  }
-}
-
 class Sunflower {
-  var orange = 'orange';
+  var color = 'orange';
   static const seedRadius = 2;
   static const scaleFactor = 4;
   static const tau = math.pi * 2;
-  static const maxD = 300;
+  static const maxX = 700;
+  static const maxY = 500;
 
   static final phi = (math.sqrt(5) + 1) / 2;
-  static final center = maxD / 2;
 
   final context = (querySelector('#canvas') as CanvasElement).context2D;
 
@@ -63,13 +42,13 @@ class Sunflower {
   // Draw the complete figure for the current number of seeds.
   void drawFrame() {
 
-    context.clearRect(0, 0, maxD, maxD);
+    context.clearRect(0, 0, maxX, maxY);
 
     for (var i = 0; i < 361; i++) {
       var k =  i * d;
       var r = 150 * math.sin(n*k*math.pi / 180);
-      var x = center + r * math.cos(k*math.pi / 180);
-      var y = center - r * math.sin(k*math.pi / 180);
+      var x = 350 + r * math.cos(k*math.pi / 180);
+      var y = 250 - r * math.sin(k*math.pi / 180);
       drawSeed(x, y);
     }
   }
@@ -78,8 +57,8 @@ class Sunflower {
     context
       ..beginPath()
       ..lineWidth = 2
-      ..fillStyle = orange
-      ..strokeStyle = orange
+      ..fillStyle = color
+      ..strokeStyle = color
       ..arc(x, y, seedRadius, 0, tau, false)
       ..fill()
       ..closePath()
