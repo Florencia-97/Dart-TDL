@@ -4,11 +4,19 @@ import 'dart:io';
 
 var global = 5;
 
+testGlobal() {
+  print('accedo a la variable global en testGlobal: $global');
+}
+
 main() async {
+  //puerto para recibir los mensajes
   var receivePort = new ReceivePort();
+  //lanzo el isolate que va a revertir los mensajes y devolverlos
   await Isolate.spawn(reverseMsg, receivePort.sendPort);
+
   global = 6;
   print('accedo a la variable global desde Isolate Main: $global');
+  testGlobal();
   
   print('Isolate Main: recibi puerto a donde mandar');
 
@@ -18,7 +26,7 @@ main() async {
     
     if(data.toString() == 'SendPort')sendPort = data;
  
-    if(data == ''){
+    if(data == ''){//si termina cierro el puerto
       receivePort.close();
       return;
     }
@@ -36,13 +44,15 @@ reverseMsg(SendPort sendPort) async {
   // Notify any other isolates what port this isolate listens to.
   sendPort.send(port.sendPort);
 
+  global -=1;
   print('accedo a la variable global desde Isolate spawn: $global');
+  testGlobal();
 
   await for (var msg in port) {
     var reverse = msg.split('').reversed.join();
     print("Isolate spawn: envio $reverse");
     sendPort.send(reverse);
-    if (msg == "") port.close();
+    if (msg == "") port.close(); //para terminar cierro el puerto
   }
   
 }
