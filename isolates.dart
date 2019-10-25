@@ -7,19 +7,25 @@ var global = 5;
 main() async {
   var receivePort = new ReceivePort();
   await Isolate.spawn(reverseMsg, receivePort.sendPort);
+  global = 6;
   print('accedo a la variable global desde Isolate Main: $global');
-
-  // The 'echo' isolate sends it's SendPort as the first message
-  var sendPort = await receivePort.first;
+  
   print('Isolate Main: recibi puerto a donde mandar');
 
-  var msg;
-  while(msg != "") {
+  var sendPort;
+  receivePort.listen((data) {
+    print('Isolate Main: recibi $data');
+    
+    if(data.toString() == 'SendPort')sendPort = data;
+ 
+    if(data == ''){
+      receivePort.close();
+      return;
+    }
     print("mensaje a enviar o enter para terminar:");
     var line = stdin.readLineSync();
-    msg = await sendReceive(sendPort, line);
-    print('Isolate Main: recibi $msg');
-  }
+    sendPort.send(line);
+  });
 }
 
 // the entry point for the isolate
@@ -33,13 +39,12 @@ reverseMsg(SendPort sendPort) async {
   print('accedo a la variable global desde Isolate spawn: $global');
 
   await for (var msg in port) {
-    var data = msg[0];
-    SendPort replyTo = msg[1];
-    var reverse = data.split('').reversed.join();
+    var reverse = msg.split('').reversed.join();
     print("Isolate spawn: envio $reverse");
-    replyTo.send(reverse);
-    if (data == "") port.close();
+    sendPort.send(reverse);
+    if (msg == "") port.close();
   }
+  
 }
 
 /// sends a message on a port, receives the response,
