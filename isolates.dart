@@ -11,10 +11,11 @@ testGlobal() {
 main() async {
   //puerto para recibir los mensajes
   var receivePort = new ReceivePort();
+  global += 1;
   //lanzo el isolate que va a revertir los mensajes y devolverlos
   await Isolate.spawn(reverseMsg, receivePort.sendPort);
 
-  global = 6;
+  
   print('accedo a la variable global desde Isolate Main: $global');
   testGlobal();
   
@@ -49,19 +50,20 @@ reverseMsg(SendPort sendPort) async {
   testGlobal();
 
   await for (var msg in port) {
-    var reverse = msg.split('').reversed.join();
-    print("Isolate spawn: envio $reverse");
-    sendPort.send(reverse);
+    var line;
+    var response = msg;
+    print("Isolate spawn: recibi $msg");
+    while (line != 'y' && line != 'n' && msg != '') {
+      
+      print("desea devolver el mensaje invertido? [y/n]:");
+      line = stdin.readLineSync();
+      if(line == 'y') response = msg.split('').reversed.join();
+    }
+    
+    print("Isolate spawn: envio $response");
+    sendPort.send(response);
     if (msg == "") port.close(); //para terminar cierro el puerto
   }
   
 }
 
-/// sends a message on a port, receives the response,
-/// and returns the message
-Future sendReceive(SendPort port, msg) {
-  ReceivePort response = new ReceivePort();
-  print('Isolate Main: envio $msg');
-  port.send([msg, response.sendPort]);
-  return response.first;
-}
