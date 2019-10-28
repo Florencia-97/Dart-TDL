@@ -11,15 +11,14 @@ testGlobal() {
 main() async {
   //puerto para recibir los mensajes
   var receivePort = new ReceivePort();
-  global += 1;
+  
   //lanzo el isolate que va a revertir los mensajes y devolverlos
   await Isolate.spawn(reverseMsg, receivePort.sendPort);
 
+  global += 1;
   
   print('accedo a la variable global desde Isolate Main: $global');
   testGlobal();
-  
-  print('Isolate Main: recibi puerto a donde mandar');
 
   var sendPort;
   receivePort.listen((data) {
