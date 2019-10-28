@@ -72,7 +72,10 @@ mult_por_dos(x) => x*2;
 multiplicar_por_dos_elems_lista(lista){
   //metodos de alto orden ya que pueden recibir funciones
   //agregar map o where
-  lista.forEach(mult_por_dos);
+  lista
+    .where((n) => n < 6)
+    .forEach((n) => n*2);
+
 }
 
 // También una variable puede ser una función
@@ -85,7 +88,7 @@ saludar_personas(personas){
 
 funciones_como_params_y_vars(){
   print("Funciones como parametros y variables:");
-  var lista = [1,2,3];
+  var lista = [1,2,3,4,5,6,7,8,9];
   print(lista);
   multiplicar_por_dos_elems_lista(lista);
   print(lista);
