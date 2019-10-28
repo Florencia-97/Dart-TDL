@@ -45,20 +45,12 @@ reverseMsg(SendPort sendPort) async {
   // Notify any other isolates what port this isolate listens to.
   sendPort.send(port.sendPort);
 
-  global -=1;
   print('accedo a la variable global desde Isolate spawn: $global');
   testGlobal();
 
   await for (var msg in port) {
-    var line;
-    var response = msg;
+    var response = msg.split('').reversed.join();
     print("Isolate spawn: recibi $msg");
-    while (line != 'y' && line != 'n' && msg != '') {
-      
-      print("desea devolver el mensaje invertido? [y/n]:");
-      line = stdin.readLineSync();
-      if(line == 'y') response = msg.split('').reversed.join();
-    }
     
     print("Isolate spawn: envio $response");
     sendPort.send(response);
