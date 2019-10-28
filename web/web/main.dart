@@ -20,7 +20,7 @@ class Sunflower {
   int d = 0;
   int n = 0;
 
-  Sunflower() {
+  Sunflower(){
     InputElement _n = querySelector('#n');
     InputElement _d = querySelector('#d');
 
@@ -36,7 +36,6 @@ class Sunflower {
 
     _n.onChange.listen((_) => updateNFlower());
     _d.onChange.listen((_) => updateDFlower());
-
   }
 
   // Draw the complete figure for the current number of seeds.
@@ -54,6 +53,10 @@ class Sunflower {
   }
 
   void drawSeed(num x, num y) {
+    //Withou cascaede notation
+    // context.beginPath();
+    // context.lineWidth = 2;
+    // context.fillStyle = color; 
     context
       ..beginPath()
       ..lineWidth = 2
