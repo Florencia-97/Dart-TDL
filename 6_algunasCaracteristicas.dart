@@ -26,13 +26,27 @@ sin_cascade_listas(){
   return lista;
 }
 
-void main(){
-  cascade_con_strings();
-  print(cascade_con_listas());
-  print(sin_cascade_listas());
+
+operadores(){
   var persona = null;
   // Que valdrá nombre?
   var nombre = persona?.nombre;
   // Esto es algo similar a un nomad.
+
   print( "Nombre: $nombre");
+
+  //Podriamos tener un default si el nombre es null
+  nombre =  persona?.nombre ?? 'Usuario desconocido';
+  print( "Nombre: $nombre");
+
+  // De manera similar podemos hacer
+  nombre = persona?.nombre == null ? persona?.nombre : "extraño";
+  
+}
+
+void main(){
+  cascade_con_strings();
+  print(cascade_con_listas());
+  print(sin_cascade_listas());
+  operadores();
 }
